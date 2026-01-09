@@ -72,6 +72,13 @@ app.get('/products', (req, res) => {
 // READ - Buscar um produto específico por ID
 app.get('/products/:id', (req, res) => {
   const id = parseInt(req.params.id);
+  
+  if (isNaN(id)) {
+    return res.status(400).json({ 
+      erro: 'ID inválido' 
+    });
+  }
+  
   const produto = produtos.find(p => p.id === id);
   
   if (!produto) {
@@ -86,6 +93,13 @@ app.get('/products/:id', (req, res) => {
 // UPDATE - Atualizar um produto
 app.put('/products/:id', (req, res) => {
   const id = parseInt(req.params.id);
+  
+  if (isNaN(id)) {
+    return res.status(400).json({ 
+      erro: 'ID inválido' 
+    });
+  }
+  
   const index = produtos.findIndex(p => p.id === id);
   
   if (index === -1) {
@@ -106,9 +120,9 @@ app.put('/products/:id', (req, res) => {
   // Atualizar campos fornecidos
   const produtoAtualizado = {
     ...produtos[index],
-    nome: nome || produtos[index].nome,
-    marca: marca || produtos[index].marca,
-    categoria: categoria || produtos[index].categoria,
+    nome: nome !== undefined ? nome : produtos[index].nome,
+    marca: marca !== undefined ? marca : produtos[index].marca,
+    categoria: categoria !== undefined ? categoria : produtos[index].categoria,
     preco: preco !== undefined ? parseFloat(preco) : produtos[index].preco,
     estoque: estoque !== undefined ? estoque : produtos[index].estoque,
     descricao: descricao !== undefined ? descricao : produtos[index].descricao,
@@ -122,6 +136,13 @@ app.put('/products/:id', (req, res) => {
 // DELETE - Excluir um produto
 app.delete('/products/:id', (req, res) => {
   const id = parseInt(req.params.id);
+  
+  if (isNaN(id)) {
+    return res.status(400).json({ 
+      erro: 'ID inválido' 
+    });
+  }
+  
   const index = produtos.findIndex(p => p.id === id);
   
   if (index === -1) {
